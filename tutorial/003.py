@@ -1,23 +1,20 @@
 from urllib2 import urlopen
-from urllib2 import HTTPError
 from bs4 import BeautifulSoup
 
+# try to use the class of bs object
 
-def getTitle(web):
-    try:
-        html = urlopen(web)
-    except HTTPError as e:
-        print('A HTTP error occured as {}'.format(e))
-        return None
+html = urlopen("http://www.pythonscraping.com/pages/warandpeace.html")
 
-    try:
-        bsObj = BeautifulSoup(html.read(), 'lxml')
-        title = bsObj.h2
-    except AttributeError as e:
-        print('An AttributeError occured as {}'.format(e))
-        return None
-    return title
+if 'bookReader' not in locals():
+    bookReader = BeautifulSoup(html, 'lxml')
 
-title = getTitle(
-    "http://www.pythonscraping.com/exercises/exercise1.html")
-print(title)
+nameList = bookReader.findAll("span", {"class", "green"})
+
+
+"""
+for sentence in nameList:
+    print(sentence)  # the sentence is a bs element.tag
+    print(sentence.get_text())  # it is the actual text of the object
+    """
+numPrince = bookReader.findAll(text='the prince')
+print(numPrince)
